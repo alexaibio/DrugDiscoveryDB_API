@@ -24,6 +24,6 @@ RUN pip install --no-cache-dir --upgrade pip &&\
     rm -rf /root/.cache/pip &&\
     rm requirements.txt
 
-COPY pub_chem_api ${APP_HOME}
+COPY app ${APP_HOME}
 
-# optionally : CMD["python", "main.py"]
+# optionally : CMD["python", "alex_api.py"]

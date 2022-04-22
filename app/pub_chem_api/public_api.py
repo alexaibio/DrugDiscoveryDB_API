@@ -5,7 +5,7 @@ import httpx
 
 
 class PubChemAPI:
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/"):
         self.base_url = base_url
 
     def get_cid_by_name(self, compound_name: str) -> str:
@@ -16,7 +16,7 @@ class PubChemAPI:
         syn_dict = self.__parse_synonyms(result)
         return syn_dict[0].upper()
 
-    def get_all_synonyms_by_cid(self, cid: str) -> str:
+    def get_all_synonyms_by_cid(self, cid: str) -> list:
         result = self.__api_request_synonyms(cid)
         syn_dict = self.__parse_synonyms(result)
         return list(syn_dict)
@@ -40,7 +40,7 @@ class PubChemAPI:
         except Exception as e:
             raise e
 
-    def __api_request_canonical_smile(self, cid: str) -> dict:
+    def __api_request_canonical_smile(self, cid: str) -> str:
         try:
             # https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/122758/property/CanonicalSMILES/txt
             response = httpx.post(f'{self.base_url}cid/{cid}/property/CanonicalSMILES/TXT', timeout=None)
