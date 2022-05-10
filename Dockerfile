@@ -26,4 +26,4 @@ RUN pip install --no-cache-dir --upgrade pip &&\
 
 COPY app ${APP_HOME}
 
-# optionally : CMD["python", "alex_api.py"]
+# optionally : CMD["python", "pubchem.py"]

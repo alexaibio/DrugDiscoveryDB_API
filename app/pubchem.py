@@ -1,4 +1,4 @@
-from public_api import PubChemAPI
+from pubchem import PubChemAPI
 
 base_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/"
 compounds_list = ["Methotrexate", "Adenosine","Adenocard","BG8967","Bivalirudin","BAYT006267","diflucan","ibrutinib","PC-32765"]
