@@ -7,7 +7,8 @@ from pathlib import Path
 from typing import Optional, Any
 import pandas as pd
 from rdkit import Chem
-from pub_chem_api.public_api import PubChemAPI
+from app.pub_chem_api.pubchem import PubChemAPI
+from app.settings import get_project_root
 
 
 class AlmanacRepo:
@@ -15,8 +16,8 @@ class AlmanacRepo:
         self.__cache_db_df: Optional[Any] = None  # either an object of the specific type is required, or None is required
         self.__chemid_list: Optional[list] = None
         self.__smile_list: dict = {}
-        self.__almanach_file = Path("../app/DATA_DB/ALMANACH/ComboDrugGrowth_Nov2017.zip")
-        self.__cache_file = Path("cache/smile_list.pickle")
+        self.__almanach_file = get_project_root() / "DATA_DB/ALMANACH/ComboDrugGrowth_Nov2017.zip"
+        self.__cache_file = get_project_root / "files/cache/smile_list.pickle"
 
     def __load_db_of(self) -> Optional[Any]:
         try:

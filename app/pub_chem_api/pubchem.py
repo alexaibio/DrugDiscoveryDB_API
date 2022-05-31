@@ -44,14 +44,13 @@ class PubChemAPI:
         try:
             # https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/122758/property/CanonicalSMILES/txt
             response = httpx.post(f'{self.base_url}cid/{cid}/property/CanonicalSMILES/TXT', timeout=None)
-            return self.__check_response(response).text
+            return (self.__check_response(response).text).strip('\n')
         except Exception as e:
             raise e
 
-
     def __check_response(self, response: httpx.Response) -> httpx.Response:
         if response.status_code != 200:
-            raise
+            raise Exception(f'PubChen API bad respone (no chemical?) {response.status_code}')
         return response
 
     def __parse_synonyms(self, response: dict) -> str:

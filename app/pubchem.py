@@ -1,4 +1,4 @@
-from pubchem import PubChemAPI
+from app.pub_chem_api.pubchem import PubChemAPI
 
 base_url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/"
 compounds_list = ["Methotrexate", "Adenosine","Adenocard","BG8967","Bivalirudin","BAYT006267","diflucan","ibrutinib","PC-32765"]
@@ -6,9 +6,13 @@ compounds_list = ["Methotrexate", "Adenosine","Adenocard","BG8967","Bivalirudin"
 pubchem_api = PubChemAPI(base_url)
 
 # find a canonical name for one element
-cid = pubchem_api.get_cid_by_name(compounds_list[0])
+cid = pubchem_api.get_cid_by_name('Talabostat')  # Methotrexate
 canonical_name = pubchem_api.get_canonical_name_by_cid(cid)
+synonums_list = pubchem_api.get_all_synonyms_by_cid(cid)
+smile = pubchem_api.get_canonical_smile_by_cid(cid)
 print(f'{cid} / {canonical_name}')
+print(f'synonims: {synonums_list}')
+print(smile)
 
 # find name by id
 cid = 122758
