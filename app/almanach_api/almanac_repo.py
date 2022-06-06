@@ -25,6 +25,13 @@ class AlmanacRepo:
         alm_df.dropna(inplace=True)
         alm_df = alm_df[['CELLNAME', 'NSC1', 'CONCINDEX1', 'NSC2', 'CONCINDEX2', 'SCORE']]
         alm_df = alm_df.astype({"NSC2": int})
+
+        # correct some cell_line names
+        alm_df.loc[alm_df.CELLNAME == 'A549/ATCC', 'CELLNAME'] = 'A549'
+        alm_df.loc[alm_df.CELLNAME == 'HL-60(TB)', 'CELLNAME'] = 'HL-60'
+        alm_df.loc[alm_df.CELLNAME == 'NCI/ADR-RES', 'CELLNAME'] = 'NCI-ADR-RES'
+        alm_df.loc[alm_df.CELLNAME == 'MDA-MB-231/ATCC', 'CELLNAME'] = 'MDA-MB-231'
+
         return alm_df
 
     def __load_smiles(self) -> dict:
@@ -39,18 +46,15 @@ class AlmanacRepo:
         return dict
 
     def __validate_alm_db_cache(self):
-        if not self.__cache_db_df:
+        if self.__cache_db_df is None:
             self.__cache_db_df = self.__load_db_of()
-            self.__compound_id_list = self.__cache_db_df.NSC1.unique()
+            self.__chemid_list = self.__cache_db_df.NSC1.unique()
 
-            # correct some cell_line names
-            self.__cache_db_df.loc[self.__cache_db_df.CELLNAME == 'A549/ATCC', 'CELLNAME'] = 'A549'
-            self.__cache_db_df.loc[self.__cache_db_df.CELLNAME == 'HL-60(TB)', 'CELLNAME'] = 'HL-60'
-            self.__cache_db_df.loc[self.__cache_db_df.CELLNAME == 'NCI/ADR-RES', 'CELLNAME'] = 'NCI-ADR-RES'
-            self.__cache_db_df.loc[self.__cache_db_df.CELLNAME == 'MDA-MB-231/ATCC', 'CELLNAME'] = 'MDA-MB-231'
+
 
             self.__cell_line_list = self.__cache_db_df.CELLNAME.unique()
 
+        # if it is still not exist...
         if self.__cache_db_df is None:
             print("ERROR: alm file is not loaded!")
             raise  # Generate an exception here if file error
@@ -70,7 +74,8 @@ class AlmanacRepo:
     def get_alm_compound_id_list(self):
         return self.__compound_id_list
 
-    def get_alm_cell_lines_id(self):
+    def get_alm_cell_lines(self):
+        self.__validate_alm_db_cache()
         return self.__cell_line_list
 
     def get_smile_of(self, chemid: int) -> str:
@@ -87,8 +92,8 @@ if __name__ == "__main__":
     data = alm.get_alm_data()
 
     id_list = alm.get_alm_compound_id_list()
-    cell_lines = alm.get_alm_cell_lines_id()
-    
+    cell_lines = alm.get_alm_cell_lines()
+
     smile = alm.get_smile_of(752)
     print(smile)
 
