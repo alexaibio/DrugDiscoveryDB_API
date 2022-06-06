@@ -57,3 +57,6 @@ class PubChemAPI:
         syn_list = response["InformationList"]["Information"][0]["Synonym"]
         return syn_list
 
+if __name__ == "__main__":
+    pb = PubChemAPI()
+    print(pb.get_cid_by_name(compound_name='erythromycin'))

@@ -52,8 +52,15 @@ class DrugCombData:
     def get_drug_combinations_as_list(self) -> list:
         return list(self._db.values())
 
+    def get_drug_combinations_for_cell_line(self, cell_line) -> list:
+        return [v for v in self._db.values() if v.cell_line == cell_line]
+
     def get_pure_synergistic_combinations(self) -> list:
         return [ v for v in self._db.values() if v.interaction.lower() in ['synergy', 'synergistic'] ]
+
+    def get_cell_line_names(self) -> set:
+        only_cell_lines = [ comb.cell_line for comb in list(self._db.values()) if comb.cell_line != '']
+        return set(only_cell_lines)
 
 
 if __name__ == "__main__":

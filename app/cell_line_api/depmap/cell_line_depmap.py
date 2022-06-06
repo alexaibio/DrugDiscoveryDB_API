@@ -49,6 +49,6 @@ class CellLineData:
 
 if __name__ == "__main__":
     db = CellLineData('DepMap-2018q3-celllines.csv')
-    rec = db['A498']
+    rec = db['K-562']
     print(rec)
 
